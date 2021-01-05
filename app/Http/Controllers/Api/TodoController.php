@@ -35,4 +35,18 @@ class TodoController extends Controller
         ]);
     }
 
+    public function update(Todo $todo, Request $request) {
+        $todo->update($request->validated());
+
+        return (new TodoResource($todo))->additional([
+            'message' => 'Todo updated successfully',
+        ]);
+    }
+
+    public function destroy(Todo $todo) {
+        $todo->delete();
+
+        return response()->noContent();
+    }
+
 }
