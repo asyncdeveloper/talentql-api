@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\TodoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::namespace('Api')->group(function() {
-    Route::prefix('auth')->group(function() {
-        Route::post('register', [ AuthController::class, 'register'])->name('register');
-        Route::post('login', [ AuthController::class, 'login'])->name('login');
-    });
+Route::prefix('auth')->group(function() {
+    Route::post('register', [ AuthController::class, 'register'])->name('register');
+    Route::post('login', [ AuthController::class, 'login'])->name('login');
+});
+
+Route::middleware('auth:api')->group(function() {
+    Route::apiResource('todos', TodoController::class);
 });
