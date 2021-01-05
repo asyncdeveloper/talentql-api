@@ -7,6 +7,7 @@ use App\Http\Requests\TodoRequest;
 use App\Http\Resources\TodoResource;
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TodoController extends Controller
 {
@@ -26,7 +27,7 @@ class TodoController extends Controller
         return (new TodoResource($todo))->additional([
             'message' => 'Todo created successfully',
         ])->response()
-        ->setStatusCode(201);
+        ->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(Todo $todo, TodoRequest $request) {
@@ -46,7 +47,7 @@ class TodoController extends Controller
     public function destroy(Todo $todo, TodoRequest $request) {
         $todo->delete();
 
-        return response()->noContent();
+        return response()->setStatusCode(Response::HTTP_NO_CONTENT);
     }
 
 }

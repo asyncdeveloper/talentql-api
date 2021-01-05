@@ -7,6 +7,7 @@ use App\Http\Requests\AuthRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -16,14 +17,14 @@ class AuthController extends Controller
         return (new UserResource($user))->additional([
             'message' => 'User created successfully',
         ])->response()
-        ->setStatusCode(201);
+        ->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function login(AuthRequest $request) {
         $token = Auth::attempt($request->validated());
 
         if (! $token) {
-            return response()->json([ 'errors' => 'Invalid login credentials' ], 401);
+            return response()->json([ 'errors' => 'Invalid login credentials' ], Response::HTTP_UNAUTHORIZED);
         }
 
         return (new UserResource(Auth::user()))->additional([
