@@ -29,13 +29,13 @@ class TodoController extends Controller
         ->setStatusCode(201);
     }
 
-    public function show(Todo $todo) {
+    public function show(Todo $todo, TodoRequest $request) {
         return (new TodoResource($todo))->additional([
             'message' => 'Todo fetched successfully',
         ]);
     }
 
-    public function update(Todo $todo, Request $request) {
+    public function update(Todo $todo, TodoRequest $request) {
         $todo->update($request->validated());
 
         return (new TodoResource($todo))->additional([
@@ -43,7 +43,7 @@ class TodoController extends Controller
         ]);
     }
 
-    public function destroy(Todo $todo) {
+    public function destroy(Todo $todo, TodoRequest $request) {
         $todo->delete();
 
         return response()->noContent();

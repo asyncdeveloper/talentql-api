@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Todo;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TodoRequest extends FormRequest
@@ -13,7 +14,16 @@ class TodoRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $user = $this->user();
+
+        if ($this->getMethod() === 'POST') {
+            return $user->can('create', Todo::class);
+        } elseif ($this->getMethod() === 'PATCH') {
+            return $user->can('update', $this->todo);
+        } elseif ($this->getMethod() === 'DELETE') {
+            return $user->can('delete', $this->todo);
+        }
+        return $user->can('view', $this->todo);
     }
 
     /**
@@ -23,6 +33,10 @@ class TodoRequest extends FormRequest
      */
     public function rules()
     {
+        if(! in_array($this->getMethod(), [ 'POST', 'PATCH' ])) {
+            return [];
+        }
+
         return [
             'title' => 'required|string|min:3|max:191',
             'body' => 'nullable|string'
