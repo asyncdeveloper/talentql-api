@@ -25,7 +25,9 @@ class TodoFactory extends Factory
         return [
             'title' => $this->faker->text(20),
             'body' => $this->faker->text,
-            'user_id' => User::factory()
+            'user_id' => User::factory(),
+            'is_completed' => false,
+            'due_date' => $this->faker->dateTimeBetween('now', '+10 years')
         ];
     }
 }
