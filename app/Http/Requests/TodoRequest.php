@@ -33,19 +33,30 @@ class TodoRequest extends FormRequest
      */
     public function rules()
     {
-        if(! in_array($this->getMethod(), [ 'POST', 'PATCH' ])) {
-            return [];
+        if($this->getMethod() === 'PATCH') {
+            return [
+                'title' => 'nullable|string|min:3|max:191',
+                'body' => 'nullable|string',
+                'due_date' => 'nullable|date_format:Y-m-d H:i:s|after:now',
+                'is_completed' => 'nullable|boolean'
+            ];
         }
 
-        return [
-            'title' => 'required|string|min:3|max:191',
-            'body' => 'nullable|string'
-        ];
+        if($this->getMethod() === 'POST') {
+            return [
+                'title' => 'required|string|min:3|max:191',
+                'body' => 'nullable|string',
+                'due_date' => 'nullable|date_format:Y-m-d H:i:s|after:now'
+            ];
+        }
+
+        return [];
     }
 
     public function validated() {
         return array_merge($this->validator->validated(), [
-            'user_id' => $this->user()->id
+            'user_id' => $this->user()->id,
+            'is_completed' => $this->get('is_completed') ?? false
         ]);
     }
 }

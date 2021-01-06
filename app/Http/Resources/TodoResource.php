@@ -18,6 +18,8 @@ class TodoResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'body' => $this->body,
+            'due_date' => $this->due_date,
+            'is_completed' => $this->is_completed,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
