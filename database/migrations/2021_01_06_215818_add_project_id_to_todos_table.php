@@ -32,7 +32,8 @@ class AddProjectIdToTodosTable extends Migration
     public function down()
     {
         Schema::table('todos', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('project_id');
+            if (\DB::getDriverName() !== 'sqlite')
+                $table->dropConstrainedForeignId('project_id');
         });
     }
 }
