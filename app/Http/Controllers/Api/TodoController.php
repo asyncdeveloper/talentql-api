@@ -47,7 +47,7 @@ class TodoController extends Controller
     public function destroy(Todo $todo, TodoRequest $request) {
         $todo->delete();
 
-        return response()->setStatusCode(Response::HTTP_NO_CONTENT);
+        return response()->noContent();
     }
 
 }
