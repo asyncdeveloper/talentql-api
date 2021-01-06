@@ -7,13 +7,19 @@ use App\Http\Requests\TodoRequest;
 use App\Http\Resources\TodoResource;
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpFoundation\Response;
 
 class TodoController extends Controller
 {
 
     public function index(Request $request) {
-        $userTodos = $request->user()->todos()->paginate();
+        $userTodos = QueryBuilder::for($request->user()->todos())
+            ->with('project')
+            ->allowedSorts('title')
+            ->allowedFilters(['title', 'body'])
+            ->paginate()
+            ->appends(request()->query());
 
         return (TodoResource::collection($userTodos))->additional([
             'message' => 'Todos fetched successfully',

@@ -7,6 +7,7 @@ use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProjectController extends Controller
@@ -14,7 +15,12 @@ class ProjectController extends Controller
 
     public function index(Request $request)
     {
-        $userProjects = $request->user()->projects()->with('creator')->paginate();
+        $userProjects = QueryBuilder::for($request->user()->projects())
+            ->with('creator')
+            ->allowedSorts('name')
+            ->allowedFilters(['name', 'description'])
+            ->paginate()
+            ->appends(request()->query());
 
         return (ProjectResource::collection($userProjects))->additional([
             'message' => 'Projects fetched successfully',
