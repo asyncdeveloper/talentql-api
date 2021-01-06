@@ -20,6 +20,7 @@ class TodoResource extends JsonResource
             'body' => $this->body,
             'due_date' => $this->due_date,
             'is_completed' => $this->is_completed,
+            'project' => new ProjectResource($this->project),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
