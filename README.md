@@ -44,7 +44,7 @@ DB_USERNAME=<YOUR_DB_USERNAME>
 DB_PASSWORD=<YOUR_DB_PASSWORD>
 ```
 
-# API documentation:
+# API documentation
 API End points and documentation can be found at:
 [Postman Documentation](https://documenter.getpostman.com/view/5928045/TVzNJesH).
 
